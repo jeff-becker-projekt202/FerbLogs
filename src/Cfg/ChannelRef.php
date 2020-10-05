@@ -11,7 +11,7 @@ class ChannelRef
     public function __construct($prefix, $config)
     {
         $level = $config['level'] ?? Logger::DEBUG;
-        $filter = $config['filter'];
+        $filter = $config['filter'] ?? null;
         $formatter = isset($conf['formatter']) ? new Instantiable($conf['formatter']) : null;
         $this->handlers = [];
         foreach ($config['handlers'] as $ref => $spec) {

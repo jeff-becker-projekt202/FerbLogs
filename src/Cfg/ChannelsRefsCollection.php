@@ -7,17 +7,25 @@ use Monolog\Handler\NullHandler;
 class ChannelsRefsCollection
 {
     private $channels;
+    private $is_only_default;
 
     public function __construct($cfg)
     {
         $this->channels = [];
-        foreach ($cfg as $key => $config) {
-            $this->channels[$key] = new ChannelRef($key, $config);
+        if (isset($cfg['*'])) {
+            foreach ($cfg as $key => $config) {
+                if (isset($config['handlers'])) {
+                    $this->channels[$key] = new ChannelRef($key, $config);
+                }
+            }
         }
     }
 
     public function create($all_handlers, $all_processors, $requested_channel)
     {
+        if (empty($this->channels)) {
+            return [[new NullHandler()], []];
+        }
         list($channel, $prefix) = $this->find_best_channel($requested_channel);
         $handlers = [];
         $processors = [];

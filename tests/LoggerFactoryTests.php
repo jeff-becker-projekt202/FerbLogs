@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ferb\Logs\Tests;
 
 use Ferb\Logs\LoggerFactory;
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,5 +45,57 @@ class LoggerFactoryTests extends TestCase
         $f = new LoggerFactory([]);
         $h = $f->create_logger(self::class);
         $this->assertNotNull($h);
+    }
+
+    public function testCanCreateDemoLogger()
+    {
+        $f = new LoggerFactory($this->getLoggerConfig());
+
+        $logger = $f->create_logger('hello\\world');
+        $this->assertNotNull($logger);
+    }
+
+    public static function getLogFile($file)
+    {
+        return "c:\\foo\\bar\\{$file}.log";
+    }
+
+    private function getLoggerConfig()
+    {
+        return [
+            'channels' => [
+                '*' => [
+                    'level' => Logger::ERROR,
+                    'handlers' => [
+                        'newrelic' => 100,
+                        'file' => 100,
+                        'error_log' => 100,
+                    ],
+                ],
+            ],
+            'handlers' => [
+                'newrelic' => [
+                    'class' => 'Monolog\\Handler\\NewRelicHandler',
+                    'condition' => [
+                        'callable' => 'extension_loaded',
+                        'args' => ['newrelic'],
+                    ],
+                ],
+                //ErrorLogHandler
+                'error_log' => [
+                    'class' => 'Monolog\\Handler\\ErrorLogHandler',
+                ],
+                'file' => [
+                    'class' => 'Monolog\\Handler\\RotatingFileHandler',
+                    'args' => [
+                        'level' => 400,
+                        'filename' => [
+                            'callable' => 'Ferb\\Logs\\Tests\\LoggerFactoryTests::getLogFile',
+                            'args' => ['hello-world'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 }
