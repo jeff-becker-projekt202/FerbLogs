@@ -36,6 +36,7 @@ final class Instantiable
         if (!self::is_instantiable($config)) {
             return (new self($config))->instantiate();
         }
+
         return null;
     }
 

@@ -33,23 +33,22 @@ class HandlerRef
         if (!isset($all_handlers[$this->ref_name])) {
             return null;
         }
-        $result = new class ($this->level, $this->prefix, $this->filter, $all_handlers[$this->ref_name], $this->formatter) extends \Monolog\Handler\HandlerWrapper
-        {
+        $result = new class($this->level, $this->prefix, $this->filter, $all_handlers[$this->ref_name], $this->formatter) extends \Monolog\Handler\HandlerWrapper {
             private $filter;
             private $level;
             private $channel;
-        
+
             public function __construct($level, $channel, $filter, $inner, $formatter)
             {
                 parent::__construct($inner);
                 $this->filter = $filter;
                 $this->level = $level;
                 $this->channel = $channel;
-                if(!empty($formatter)){
+                if (!empty($formatter)) {
                     $this->setFormatter($formatter);
                 }
             }
-        
+
             public function isHandling(array $record)
             {
                 if (1 == count(array_keys($record)) && isset($record['level'])) {
@@ -59,16 +58,16 @@ class HandlerRef
                 $is_higher_level = $record['level'] >= $this->level;
                 $f = $this->filter;
                 $is_allowed = $f($record);
-        
+
                 return $is_allowed && $is_this_channel && $is_higher_level;
             }
-        
+
             public function handle(array $record)
             {
                 if ($this->isHandling($record)) {
                     return $this->handler->handle($record);
                 }
-        
+
                 return true;
             }
         };

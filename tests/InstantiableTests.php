@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Ferb\Logs\Tests;
 
-use Ferb\Logs\LoggerFactory;
 use PHPUnit\Framework\TestCase;
 
-/**
+/*
  * @internal
  * @coversNothing
  */
@@ -26,5 +25,5 @@ use PHPUnit\Framework\TestCase;
 //     public function test_instantiate_instance_returns_null_when_not_valid(){
 
 //     }
-    
+
 // }

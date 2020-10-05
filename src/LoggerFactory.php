@@ -2,9 +2,9 @@
 
 namespace Ferb\Logs;
 
-use Monolog\Logger;
 use Ferb\Logs\Cfg\ChannelsRefsCollection;
 use Ferb\Logs\Cfg\Instantiable;
+use Monolog\Logger;
 
 final class LoggerFactory
 {

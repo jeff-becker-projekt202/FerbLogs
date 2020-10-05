@@ -13,30 +13,36 @@ use PHPUnit\Framework\TestCase;
  */
 class LoggerFactoryTests extends TestCase
 {
-
-    public function test_sanaitize_cfg_ensures_handlers(){
+    public function testSanaitizeCfgEnsuresHandlers()
+    {
         $c = LoggerFactory::sanitize_config([]);
         $this->assertArrayHasKey('handlers', $c);
     }
-    public function test_sanaitize_cfg_ensures_processors(){
+
+    public function testSanaitizeCfgEnsuresProcessors()
+    {
         $c = LoggerFactory::sanitize_config([]);
         $this->assertArrayHasKey('processors', $c);
     }
-    public function test_sanaitize_cfg_ensures_channels(){
+
+    public function testSanaitizeCfgEnsuresChannels()
+    {
         $c = LoggerFactory::sanitize_config([]);
         $this->assertArrayHasKey('channels', $c);
         $this->assertArrayHasKey('*', $c['channels']);
         $this->assertArrayHasKey('level', $c['channels']['*']);
     }
-    public function test_sanaitize_cfg_ensures_not_null(){
+
+    public function testSanaitizeCfgEnsuresNotNull()
+    {
         $c = LoggerFactory::sanitize_config(null);
         $this->assertNotNull($c);
     }
-       
-    public function test_create_null_handler(){
+
+    public function testCreateNullHandler()
+    {
         $f = new LoggerFactory([]);
         $h = $f->create_logger(self::class);
         $this->assertNotNull($h);
     }
-    
 }
